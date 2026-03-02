@@ -3,6 +3,11 @@ DROP TABLE IF EXISTS promotion;
 DROP TABLE IF EXISTS roster_member;
 DROP TABLE IF EXISTS title;
 DROP TABLE IF EXISTS title_history;
+DROP TABLE IF EXISTS title_defense;
+DROP TABLE IF EXISTS match_participant;
+DROP TABLE IF EXISTS match_card;
+DROP TABLE IF EXISTS wrestling_group_member;
+DROP TABLE IF EXISTS wrestling_group;
 DROP TABLE IF EXISTS post;
 DROP TABLE IF EXISTS comment;
 DROP TABLE IF EXISTS event;
@@ -53,6 +58,11 @@ CREATE TABLE user (
     country TEXT,
     latitude REAL,
     longitude REAL,
+
+    -- Privacy Settings
+    is_real_name_public BOOLEAN DEFAULT 0,
+    is_contact_public BOOLEAN DEFAULT 0,
+    is_location_public BOOLEAN DEFAULT 0,
 
     -- Social Media
     website_url TEXT,
@@ -116,6 +126,28 @@ CREATE TABLE roster_member (
     FOREIGN KEY (promotion_id) REFERENCES promotion (id)
 );
 
+-- Wrestling Groups: Factions, Stables, Tag Teams (e.g. The Bloodline, 4 Horsemen)
+CREATE TABLE wrestling_group (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    owner_id INTEGER NOT NULL, -- Manager or Wrestler who leads/manages the group
+    avatar_url TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (owner_id) REFERENCES user (id)
+);
+
+-- Group Members: Tracks history of who is in the group and when
+CREATE TABLE wrestling_group_member (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    wrestling_group_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    left_at TIMESTAMP, -- If null, currently a member. If set, they are a past member.
+    FOREIGN KEY (wrestling_group_id) REFERENCES wrestling_group (id),
+    FOREIGN KEY (user_id) REFERENCES user (id)
+);
+
 -- Titles: Belts, Briefcases, Trophies
 CREATE TABLE title (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -127,18 +159,6 @@ CREATE TABLE title (
     active BOOLEAN DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (promotion_id) REFERENCES promotion (id)
-);
-
--- Title History: Tracks who held what and when
-CREATE TABLE title_history (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title_id INTEGER NOT NULL,
-    wrestler_id INTEGER NOT NULL,
-    won_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    lost_date TIMESTAMP,
-    notes TEXT, -- e.g. "Won at SummerSlam"
-    FOREIGN KEY (title_id) REFERENCES title (id),
-    FOREIGN KEY (wrestler_id) REFERENCES user (id)
 );
 
 -- Posts: Updates from users (Promoters, Wrestlers, Staff)
@@ -195,6 +215,64 @@ CREATE TABLE event (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (promotion_id) REFERENCES promotion (id)
+);
+
+-- Match Card: The matches taking place at an event
+CREATE TABLE match_card (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    event_id INTEGER NOT NULL,
+    position INTEGER, -- Order on the card (1, 2, 3...)
+    match_type TEXT, -- 'Singles', 'Tag Team', 'Triple Threat', 'Battle Royal'
+    stipulation TEXT, -- 'No DQ', 'Cage Match', 'Ladder Match'
+    
+    -- Result Info
+    duration_minutes INTEGER,
+    duration_seconds INTEGER,
+    finish_type TEXT, -- 'Pinfall', 'Submission', 'DQ', 'Countout', 'Draw'
+    winner_notes TEXT, -- Summary of result
+    
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (event_id) REFERENCES event (id)
+);
+
+-- Match Participants: Linking users to matches
+CREATE TABLE match_participant (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    match_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    team_id INTEGER, -- Optional: Grouping for tag teams (e.g. 1 vs 2)
+    wrestling_group_id INTEGER, -- Optional: Link to established Faction/Group
+    outcome TEXT, -- 'Winner', 'Loser', 'Draw'
+    FOREIGN KEY (match_id) REFERENCES match_card (id),
+    FOREIGN KEY (user_id) REFERENCES user (id),
+    FOREIGN KEY (wrestling_group_id) REFERENCES wrestling_group (id)
+);
+
+-- Title History: Tracks who held what and when
+CREATE TABLE title_history (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title_id INTEGER NOT NULL,
+    wrestler_id INTEGER, -- Nullable to allow Group-only reigns (Freebird rule)
+    wrestling_group_id INTEGER, -- For Tag Teams or Factions
+    match_id INTEGER, -- Linked to the match where title was won
+    won_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    lost_date TIMESTAMP,
+    notes TEXT, -- e.g. "Won at SummerSlam"
+    FOREIGN KEY (title_id) REFERENCES title (id),
+    FOREIGN KEY (wrestler_id) REFERENCES user (id),
+    FOREIGN KEY (wrestling_group_id) REFERENCES wrestling_group (id),
+    FOREIGN KEY (match_id) REFERENCES match_card (id)
+);
+
+-- Title Defenses: Tracks successful defenses (or failures that don't change hands)
+CREATE TABLE title_defense (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title_id INTEGER NOT NULL,
+    match_id INTEGER NOT NULL,
+    result TEXT, -- 'Retained', 'DQ', 'Countout'
+    notes TEXT,
+    FOREIGN KEY (title_id) REFERENCES title (id),
+    FOREIGN KEY (match_id) REFERENCES match_card (id)
 );
 
 -- Follows: Users following other Users or Promotions
