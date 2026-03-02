@@ -9,6 +9,17 @@ Wrasslin! A Flask-based web application.
 - **Frontend**: Static HTML, CSS, JS (Served via Flask)
 - **Architecture**: Blueprints & Application Factory
 
+## Features
+
+- **Multi-Role User System**: Distinct profiles for Promoters, Wrestlers, Staff, Referees, and Fans.
+- **Wrestler Profiles**: Track stats like height, weight, hometown, finishers, theme music, and alignment (Face/Heel).
+- **Promotion Management**: Manage organizations, rosters, and contracts.
+- **Championship Tracking**: Create titles (belts, briefcases, trophies) and maintain historical lineage of champions.
+- **Event Scheduling**: Organize shows with venue details, ticketing links, and broadcast info.
+- **Social Interaction**: Feed system with posts, comments, likes, and follows.
+- **Gamification**: XP system with leveling and digital awards/badges.
+- **Moderation Tools**: Admin logs and IP banning capabilities.
+
 ## Folder Structure
 
 ```text
