@@ -25,6 +25,11 @@ def create_app(test_config=None):
     from models import models
     models.init_app(app)
 
+    # Initialize the database if it doesn't exist
+    if not os.path.exists(app.config['DATABASE']):
+        with app.app_context():
+            models.init_db()
+
     from blueprints import main_bp
     app.register_blueprint(main_bp)
 
