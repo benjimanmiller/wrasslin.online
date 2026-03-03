@@ -5,7 +5,7 @@ from flask import (
 from werkzeug.security import check_password_hash, generate_password_hash
 from models.models import get_db
 
-bp = Blueprint('auth', __name__, url_prefix='/auth')
+from . import auth_bp as bp
 
 @bp.route('/register', methods=('GET', 'POST'))
 def register():

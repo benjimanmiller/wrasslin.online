@@ -26,3 +26,19 @@ nav a {
     text-decoration: none;
     font-weight: bold;
 }
+
+/* Auth Pages & Forms */
+.auth-container {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+h1 { text-align: center; }
+.form-group { margin-bottom: 1rem; }
+label { display: block; margin-bottom: .5rem; font-weight: bold; }
+input, select { width: 100%; padding: .5rem; box-sizing: border-box; }
+button { width: 100%; padding: .75rem; background: #333; color: #fff; border: none; cursor: pointer; font-size: 1rem; }
+button:hover { background: #555; }
+.error { color: red; text-align: center; margin-bottom: 1rem; }
+.links { text-align: center; margin-top: 1rem; }
