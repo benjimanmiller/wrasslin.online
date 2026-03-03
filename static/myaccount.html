@@ -18,10 +18,233 @@
         </nav>
     </header>
     <main>
-        <h2>My Account</h2>
-        <p>Manage your profile and settings here.</p>
+        <div class="dashboard-container">
+            <!-- Left Column: Stats & Overview -->
+            <div class="col-profile">
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <img id="displayAvatar" src="" alt="Avatar" class="profile-avatar">
+                        <h2 id="displayUsername">Loading...</h2>
+                        <p id="displayType" style="text-transform: capitalize; color: #666;"></p>
+                    </div>
+                    <div class="xp-section">
+                        <p>Level <span id="displayLevel">1</span></p>
+                        <div class="xp-bar-container">
+                            <div id="xpBar" class="xp-bar-fill"></div>
+                        </div>
+                        <p style="font-size: 0.8rem; text-align: right;"><span id="displayXP">0</span> XP</p>
+                    </div>
+                </div>
+
+                <div class="activity-card">
+                    <h3>Recent Activity</h3>
+                    <ul id="activityList" class="activity-list">
+                        <li>Loading activity...</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Right Column: Settings Form -->
+            <div class="col-settings">
+                <div class="settings-card">
+                    <h3>Edit Profile</h3>
+                    <div id="updateMessage" class="error" style="color: green; display: none;"></div>
+                    
+                    <form id="profileForm">
+                        <h4>General</h4>
+                        <div class="settings-grid">
+                            <div class="form-group">
+                                <label>Avatar URL</label>
+                                <input type="text" name="avatar_url" placeholder="https://...">
+                            </div>
+                            <div class="form-group">
+                                <label>Banner URL</label>
+                                <input type="text" name="banner_url" placeholder="https://...">
+                            </div>
+                            <div class="form-group full-width">
+                                <label>Email</label>
+                                <input type="email" name="email">
+                            </div>
+                            <div class="form-group full-width">
+                                <label>Bio</label>
+                                <input type="text" name="bio" placeholder="Tell us about yourself...">
+                            </div>
+                        </div>
+
+                        <div id="wrestlerSection" style="display: none;">
+                        <h4>Wrestler Stats</h4>
+                        <div class="settings-grid">
+                            <div class="form-group">
+                                <label>Display Name</label>
+                                <input type="text" name="display_name">
+                            </div>
+                            <div class="form-group">
+                                <label>Alignment</label>
+                                <select name="alignment">
+                                    <option value="">Select...</option>
+                                    <option value="Face">Face (Good)</option>
+                                    <option value="Heel">Heel (Bad)</option>
+                                    <option value="Tweener">Tweener (Neutral)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Height</label>
+                                <input type="text" name="height" placeholder="e.g. 6'2&quot;">
+                            </div>
+                            <div class="form-group">
+                                <label>Weight</label>
+                                <input type="text" name="weight" placeholder="e.g. 240 lbs">
+                            </div>
+                            <div class="form-group">
+                                <label>Hometown</label>
+                                <input type="text" name="hometown">
+                            </div>
+                            <div class="form-group">
+                                <label>Date of Birth</label>
+                                <input type="date" name="dob">
+                            </div>
+                            <div class="form-group">
+                                <label>Finisher</label>
+                                <input type="text" name="finisher">
+                            </div>
+                            <div class="form-group full-width">
+                                <label>Theme Music</label>
+                                <input type="text" name="theme_music">
+                            </div>
+                        </div>
+                        </div>
+
+                        <h4>Social Media</h4>
+                        <div class="settings-grid">
+                            <div class="form-group"><label>Website</label><input type="text" name="website_url"></div>
+                            <div class="form-group"><label>X (Twitter)</label><input type="text" name="x_url"></div>
+                            <div class="form-group"><label>Instagram</label><input type="text" name="instagram_url"></div>
+                            <div class="form-group"><label>YouTube</label><input type="text" name="youtube_url"></div>
+                            <div class="form-group"><label>Facebook</label><input type="text" name="facebook_url"></div>
+                            <div class="form-group"><label>TikTok</label><input type="text" name="tiktok_url"></div>
+                            <div class="form-group"><label>Twitch</label><input type="text" name="twitch_url"></div>
+                            <div class="form-group"><label>BlueSky</label><input type="text" name="bsky_url"></div>
+                            <div class="form-group"><label>Discord</label><input type="text" name="discord_url"></div>
+                            <div class="form-group"><label>Merch Store</label><input type="text" name="merch_url"></div>
+                            <div class="form-group"><label>Cameo</label><input type="text" name="cameo_url"></div>
+                            <div class="form-group"><label>Patreon</label><input type="text" name="patreon_url"></div>
+                        </div>
+
+                        <h4>Personal Info (Private)</h4>
+                        <p style="font-size: 0.8rem; color: #666; margin-bottom: 1rem;">This info is only visible to you and staff unless you enable public visibility below.</p>
+                        <div class="settings-grid">
+                            <div class="form-group"><label>Real Name</label><input type="text" name="real_name"></div>
+                            <div class="form-group"><label>Phone</label><input type="text" name="phone"></div>
+                            <div class="form-group full-width"><label>Address</label><input type="text" name="address"></div>
+                            <div class="form-group"><label>City</label><input type="text" name="city"></div>
+                            <div class="form-group"><label>State</label><input type="text" name="state"></div>
+                            <div class="form-group"><label>Zip Code</label><input type="text" name="zip_code"></div>
+                            <div class="form-group"><label>Country</label><input type="text" name="country"></div>
+                        </div>
+
+                        <h4>Privacy Settings</h4>
+                        <div class="settings-grid">
+                            <div class="form-group full-width" style="display: flex; align-items: center; gap: 10px;">
+                                <input type="checkbox" name="is_real_name_public" id="is_real_name_public" style="width: auto;">
+                                <label for="is_real_name_public" style="margin: 0;">Make Real Name Public</label>
+                            </div>
+                            <div class="form-group full-width" style="display: flex; align-items: center; gap: 10px;">
+                                <input type="checkbox" name="is_contact_public" id="is_contact_public" style="width: auto;">
+                                <label for="is_contact_public" style="margin: 0;">Make Contact Info Public</label>
+                            </div>
+                            <div class="form-group full-width" style="display: flex; align-items: center; gap: 10px;">
+                                <input type="checkbox" name="is_location_public" id="is_location_public" style="width: auto;">
+                                <label for="is_location_public" style="margin: 0;">Make Location Public</label>
+                            </div>
+                        </div>
+
+                        <button type="submit" style="margin-top: 1rem;">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Management Column -->
+            <div class="col-management">
+                <!-- Promoter Tools -->
+                <div id="promoterTools" style="display: none;">
+                    <div class="settings-card">
+                        <h3>Promoter Tools</h3>
+                        
+                        <div id="createPromotionContainer">
+                            <div class="tool-card">
+                                <h5>Create Promotion</h5>
+                                <form id="createPromotionForm">
+                                    <div class="form-group"><input type="text" name="name" placeholder="Promotion Name" required></div>
+                                    <button type="submit">Create</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div id="managePromotionContainer" style="display: none;">
+                            <h4 id="myPromotionName">My Promotion</h4>
+                            
+                            <div class="tool-card">
+                                <h5>Recruit to Roster</h5>
+                                <form id="recruitForm">
+                                    <div class="form-group"><input type="text" name="username" placeholder="Wrestler Username" required></div>
+                                    <div class="form-group"><input type="text" name="role" placeholder="Role (e.g. Wrestler)" value="Wrestler"></div>
+                                    <button type="submit">Add to Roster</button>
+                                </form>
+                            </div>
+
+                            <div class="tool-card">
+                                <h5>Create Title</h5>
+                                <form id="createTitleForm">
+                                    <div class="form-group"><input type="text" name="name" placeholder="Title Name" required></div>
+                                    <div class="form-group">
+                                        <select name="type">
+                                            <option value="Belt">Belt</option>
+                                            <option value="Trophy">Trophy</option>
+                                            <option value="Briefcase">Briefcase</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit">Create Title</button>
+                                </form>
+                                <div style="margin-top: 10px; text-align: right;">
+                                    <a href="titles.html" style="font-size: 0.9rem; color: #333;">
+                                        Manage Titles & History &rarr;
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="tool-card">
+                                <h5>Schedule Event</h5>
+                                <form id="createEventForm">
+                                    <div class="form-group"><input type="text" name="name" placeholder="Event Name" required></div>
+                                    <div class="form-group"><input type="datetime-local" name="date_time" required></div>
+                                    <button type="submit">Create Event</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wrestler Tools -->
+                <div id="wrestlerTools" style="display: none;">
+                    <div class="settings-card">
+                        <h3>Wrestler Actions</h3>
+                        <div class="tool-card">
+                            <h5>Join Promotion</h5>
+                            <form id="joinPromotionForm">
+                                <div class="form-group">
+                                    <select id="promotionSelect" name="promotion_id" required>
+                                        <option value="">Loading promotions...</option>
+                                    </select>
+                                </div>
+                                <button type="submit">Request to Join</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
-    <script src="js/script.js"></script>
     <script src="js/navbar.js"></script>
+    <script src="js/myaccount.js"></script>
 </body>
 </html>

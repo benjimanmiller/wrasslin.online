@@ -31,5 +31,5 @@
 - Database schema expanded to include detailed user info, wrestler stats, social links, likes, geolocation, calendar export fields, XP system, moderation tools, and awards.
 - **Schema Update (Groups)**: `wrestling_group` table added to handle Factions/Stables. `wrestling_group_member` tracks historical membership (joined/left dates).
 - **Schema Update (Matches)**: `match_card` and `match_participant` added. Participants can be linked to a `wrestling_group`.
-- **Schema Update (Titles)**: `title_history` updated to support the "Freebird Rule" (linking to a group instead of a specific user). `title_defense` added to track successful retentions.
+- **Schema Update (Titles)**: `title_history` updated to support the "Freebird Rule" (linking to a group instead of a specific user) and Non-User champions (via `champion_name`). `title_defense` added to track successful retentions.
 - **Schema Update (Privacy)**: User table now includes `is_real_name_public`, `is_contact_public`, and `is_location_public` flags.

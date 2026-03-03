@@ -112,6 +112,7 @@ def status():
     if g.user:
         return jsonify({
             'logged_in': True, 
+            'id': g.user['id'],
             'username': g.user['username'], 
             'user_type': g.user['user_type']
         })

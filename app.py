@@ -30,9 +30,10 @@ def create_app(test_config=None):
         with app.app_context():
             models.init_db()
 
-    from blueprints import main_bp, auth_bp
+    from blueprints import main_bp, auth_bp, api_bp
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
+    app.register_blueprint(api_bp)
 
     return app
 

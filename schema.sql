@@ -73,6 +73,10 @@ CREATE TABLE user (
     tiktok_url TEXT,
     twitch_url TEXT,
     bsky_url TEXT,
+    merch_url TEXT,
+    cameo_url TEXT,
+    patreon_url TEXT,
+    discord_url TEXT,
     
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -252,8 +256,9 @@ CREATE TABLE match_participant (
 CREATE TABLE title_history (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title_id INTEGER NOT NULL,
-    wrestler_id INTEGER, -- Nullable to allow Group-only reigns (Freebird rule)
+    wrestler_id INTEGER, -- Nullable to allow Group-only reigns (Freebird rule) or Non-User reigns
     wrestling_group_id INTEGER, -- For Tag Teams or Factions
+    champion_name TEXT, -- For non-user/historical champions
     match_id INTEGER, -- Linked to the match where title was won
     won_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     lost_date TIMESTAMP,
