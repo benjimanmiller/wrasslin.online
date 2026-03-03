@@ -17,8 +17,10 @@
 - [x] Implement Login logic (API/Form handling).
 - [ ] Implement XP System (Settings & Logging).
 - [x] Create User Registration (handling different user types).
+- [x] Connect frontend forms to backend endpoints (Auth).
+- [x] Implement Dynamic Navigation (Navbar, Logout, Auth State).
 - [ ] Implement Gamification Logic (XP gain on actions).
-- [ ] Connect frontend forms to backend endpoints.
+- [ ] Implement User Profile Management (My Account).
 - [ ] Implement Group/Faction management (CRUD & Membership).
 - [ ] Implement Match Result logging (Card positioning, winners, times).
 - [ ] Implement Title Management (Defenses vs Changes, Freebird rule support).

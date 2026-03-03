@@ -1,6 +1,6 @@
 // Check if already logged in
 fetch('/auth/status').then(r => r.json()).then(data => {
-    if(data.logged_in) window.location.href = '/';
+    if(data.logged_in) window.location.href = '/feed.html';
 });
 
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
@@ -17,7 +17,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
         const result = await response.json();
         
         if (result.success) {
-            window.location.href = '/';
+            window.location.href = '/feed.html';
         } else {
             document.getElementById('message').textContent = result.error || 'Login failed';
         }
