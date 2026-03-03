@@ -15,8 +15,10 @@
 - [x] Define database schema (schema.sql).
 - [x] Initialize Database (init-db command).
 - [ ] Implement Login logic (API/Form handling).
+- [x] Implement Login logic (API/Form handling).
 - [ ] Implement XP System (Settings & Logging).
 - [ ] Create User Registration (handling different user types).
+- [x] Create User Registration (handling different user types).
 - [ ] Implement Gamification Logic (XP gain on actions).
 - [ ] Connect frontend forms to backend endpoints.
 - [ ] Implement Group/Faction management (CRUD & Membership).
