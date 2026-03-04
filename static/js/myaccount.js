@@ -108,6 +108,7 @@ async function loadManagementTools() {
             document.getElementById('createPromotionContainer').style.display = 'none';
             document.getElementById('managePromotionContainer').style.display = 'block';
             document.getElementById('myPromotionName').textContent = promo.name;
+            loadRoster(myPromotionId);
         }
     } else if (user.user_type === 'wrestler') {
         document.getElementById('wrestlerTools').style.display = 'block';
@@ -123,6 +124,56 @@ async function loadManagementTools() {
             opt.textContent = p.name;
             select.appendChild(opt);
         });
+    }
+}
+
+async function loadRoster(promotionId) {
+    const list = document.getElementById('rosterMemberList');
+    list.innerHTML = '<li>Loading roster...</li>';
+
+    const rosterResp = await fetch(`/api/roster_member?promotion_id=${promotionId}`);
+    const roster = await rosterResp.json();
+
+    if (!roster.length) {
+        list.innerHTML = '<li>Your roster is empty.</li>';
+        return;
+    }
+
+    const userPromises = roster.map(member => fetch(`/api/user/${member.user_id}`).then(res => res.json()));
+    const users = await Promise.all(userPromises);
+
+    list.innerHTML = '';
+    roster.forEach((member, index) => {
+        const user = users[index];
+        const li = document.createElement('li');
+        li.style = "display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #eee;";
+        li.innerHTML = `
+            <span>${user.display_name || user.username} (${member.role})</span>
+            <button class="remove-btn" data-id="${member.id}" style="width: auto; padding: 2px 8px; font-size: 0.8rem;">Remove</button>
+        `;
+        list.appendChild(li);
+    });
+
+    list.querySelectorAll('.remove-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const rosterMemberId = e.target.dataset.id;
+            removeRosterMember(rosterMemberId);
+        });
+    });
+}
+
+async function removeRosterMember(rosterMemberId) {
+    if (!confirm('Are you sure you want to remove this person from your roster?')) return;
+
+    const resp = await fetch(`/api/roster_member/${rosterMemberId}`, {
+        method: 'DELETE'
+    });
+
+    if (resp.ok) {
+        alert('Roster member removed.');
+        loadRoster(myPromotionId); // Refresh the list
+    } else {
+        alert('Failed to remove roster member.');
     }
 }
 

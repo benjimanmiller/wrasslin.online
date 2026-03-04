@@ -20,10 +20,17 @@
 - [x] Connect frontend forms to backend endpoints (Auth).
 - [x] Implement Dynamic Navigation (Navbar, Logout, Auth State).
 - [ ] Implement Gamification Logic (XP gain on actions).
-- [ ] Implement User Profile Management (My Account).
+- [x] Implement User Profile Management (My Account).
 - [ ] Implement Group/Faction management (CRUD & Membership).
 - [ ] Implement Match Result logging (Card positioning, winners, times).
-- [ ] Implement Title Management (Defenses vs Changes, Freebird rule support).
+- [x] Implement Title Management (Defenses vs Changes, Freebird rule support).
+
+## In Progress
+- [x] Implement Global and Personal Feeds.
+- [x] Automate posts for title changes and other major events.
+- [x] Fix XP not updating on user profiles.
+- [x] Implement Roster Management for promoters (Add/Remove).
+- [x] Implement Event Management for promoters (Create/Update).
 
 ## Notes
 - HTML files are currently located in `static/` and served directly via `send_static_file` in `blueprints/routes.py`.

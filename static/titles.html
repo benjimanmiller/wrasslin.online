@@ -5,16 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Titles - Wrasslin!!</title>
     <link rel="stylesheet" href="css/style.css">
-    <style>
-        .titles-container { display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
-        .title-list-item { padding: 1rem; background: #fff; border: 1px solid #eee; margin-bottom: 0.5rem; cursor: pointer; border-radius: 4px; }
-        .title-list-item:hover { background: #f0f0f0; }
-        .title-list-item.active { background: #333; color: #fff; border-color: #333; }
-        
-        .history-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-        .history-table th, .history-table td { padding: 0.5rem; border-bottom: 1px solid #eee; text-align: left; }
-        .history-table th { background: #f9f9f9; }
-    </style>
 </head>
 <body>
     <header>
@@ -42,18 +32,35 @@
                     
                     <h4>Championship History</h4>
                     <table class="history-table">
-                        <thead><tr><th>Date</th><th>Champion</th><th>Notes</th></tr></thead>
+                        <thead><tr><th>Won</th><th>Lost</th><th>Champion</th><th>Group ID</th><th>Match ID</th><th>Notes</th></tr></thead>
                         <tbody id="historyBody"></tbody>
                     </table>
 
                     <h4>Add New Reign</h4>
                     <form id="addHistoryForm">
                         <input type="hidden" name="title_id" id="historyTitleId">
-                        <div class="form-group"><label>Date Won</label><input type="date" name="won_date" required></div>
+                        <div class="form-group"><label>Date Won</label><input type="date" name="won_date"></div>
+                        <div class="form-group"><label>Date Lost</label><input type="date" name="lost_date"></div>
                         <div class="form-group"><label>Champion User ID (Optional)</label><input type="number" name="wrestler_id" placeholder="User ID"></div>
+                        <div class="form-group"><label>Group ID (Faction/Tag)</label><input type="number" name="wrestling_group_id" placeholder="Group ID"></div>
                         <div class="form-group"><label>OR Champion Name (Non-User)</label><input type="text" name="champion_name" placeholder="e.g. Abraham Lincoln"></div>
+                        <div class="form-group"><label>Match ID</label><input type="number" name="match_id" placeholder="Match ID"></div>
                         <div class="form-group"><label>Notes</label><input type="text" name="notes" placeholder="e.g. Won at Wrestlemania"></div>
                         <button type="submit">Add History</button>
+                    </form>
+
+                    <h4>Title Defenses</h4>
+                    <table class="history-table">
+                        <thead><tr><th>Match ID</th><th>Result</th><th>Notes</th></tr></thead>
+                        <tbody id="defenseBody"></tbody>
+                    </table>
+                    <h4>Log Defense</h4>
+                    <form id="addDefenseForm">
+                        <input type="hidden" name="title_id" id="defenseTitleId">
+                        <div class="form-group"><label>Match ID</label><input type="number" name="match_id" required></div>
+                        <div class="form-group"><label>Result</label><input type="text" name="result" placeholder="Retained, DQ, etc"></div>
+                        <div class="form-group"><label>Notes</label><input type="text" name="notes"></div>
+                        <button type="submit">Log Defense</button>
                     </form>
                 </div>
                 <div id="emptyState" class="settings-card">Select a title to view history.</div>

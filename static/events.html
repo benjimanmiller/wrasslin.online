@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Events - Wrasslin!!</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1><a href="index.html">Wrasslin!</a></h1>
+        <nav>
+            <ul>
+                <li><a href="myaccount.html">My Account</a></li>
+                <li><a href="login.html">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="titles-container"> <!-- Re-using titles layout -->
+            <!-- Left: List of Events -->
+            <div class="left-col">
+                <h3>My Events</h3>
+                <div id="eventsList">Loading...</div>
+            </div>
+
+            <!-- Right: Event Details & Match Card -->
+            <div class="right-col">
+                <div id="eventDetails" class="settings-card" style="display: none;">
+                    <h2 id="selectedEventName">Event Name</h2>
+                    <p id="selectedEventDate" style="color: #666;"></p>
+                    
+                    <h4>Event Details</h4>
+                    <form id="editEventForm">
+                        <input type="hidden" name="event_id" id="eventId">
+                        <div class="form-group"><label>Event Name</label><input type="text" name="name"></div>
+                        <div class="form-group"><label>Date & Time</label><input type="datetime-local" name="date_time"></div>
+                        <div class="form-group"><label>Venue</label><input type="text" name="venue"></div>
+                        <div class="form-group"><label>City</label><input type="text" name="city"></div>
+                        <div class="form-group"><label>Description</label><input type="text" name="description"></div>
+                        <button type="submit">Update Event Details</button>
+                    </form>
+
+                    <hr style="margin: 2rem 0;">
+
+                    <h4>Match Card</h4>
+                    <div id="matchCardContainer"></div>
+                    
+                    <h4>Add New Match</h4>
+                    <form id="addMatchForm">
+                        <div class="form-group"><label>Match Type</label><input type="text" name="match_type" placeholder="e.g., Singles Match" required></div>
+                        <div class="form-group"><label>Stipulation (Optional)</label><input type="text" name="stipulation" placeholder="e.g., No DQ"></div>
+                        <button type="submit">Add Match</button>
+                    </form>
+                </div>
+                <div id="emptyState" class="settings-card">Select an event to manage it.</div>
+            </div>
+        </div>
+    </main>
+    <script src="js/events.js"></script>
+</body>
+</html>

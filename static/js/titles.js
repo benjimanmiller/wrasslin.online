@@ -48,12 +48,15 @@ async function selectTitle(title, element) {
     document.getElementById('selectedTitleName').textContent = title.name;
     document.getElementById('selectedTitleType').textContent = title.type;
     document.getElementById('historyTitleId').value = title.id;
+    document.getElementById('defenseTitleId').value = title.id;
 
     loadHistory(title.id);
+    loadDefenses(title.id);
 }
 
 async function loadHistory(titleId) {
-    const resp = await fetch(`/api/title_history?title_id=${titleId}`);
+    // Add timestamp to prevent caching
+    const resp = await fetch(`/api/title_history?title_id=${titleId}&_=${Date.now()}`);
     if (!resp.ok) {
         console.error("Failed to load history:", await resp.text());
         return;
@@ -62,17 +65,44 @@ async function loadHistory(titleId) {
     const tbody = document.getElementById('historyBody');
     tbody.innerHTML = '';
 
-    // Sort by date desc
-    history.sort((a, b) => new Date(b.won_date) - new Date(a.won_date));
+    // Sort by date desc (handle nulls safely)
+    history.sort((a, b) => {
+        const da = a.won_date ? new Date(a.won_date) : new Date(0);
+        const db = b.won_date ? new Date(b.won_date) : new Date(0);
+        return db - da;
+    });
+
+    // Resolve Usernames for Wrestler IDs
+    const wrestlerIds = [...new Set(history.map(h => h.wrestler_id).filter(id => id))];
+    const userMap = {};
+    
+    await Promise.all(wrestlerIds.map(async (id) => {
+        try {
+            const uResp = await fetch(`/api/user/${id}`);
+            if (uResp.ok) {
+                const u = await uResp.json();
+                userMap[id] = u.display_name || u.username;
+            }
+        } catch (e) { console.error(e); }
+    }));
 
     history.forEach(h => {
         const tr = document.createElement('tr');
         
-        let champDisplay = h.champion_name || (h.wrestler_id ? `User #${h.wrestler_id}` : 'Unknown');
+        let champDisplay = h.champion_name;
+        if (!champDisplay && h.wrestler_id) {
+            champDisplay = userMap[h.wrestler_id] || `User #${h.wrestler_id}`;
+        }
+        if (!champDisplay) champDisplay = 'Vacant';
+
+        const formatDate = (d) => d ? new Date(d).toLocaleDateString() : '-';
 
         tr.innerHTML = `
-            <td>${new Date(h.won_date).toLocaleDateString()}</td>
+            <td>${formatDate(h.won_date)}</td>
+            <td>${h.lost_date ? formatDate(h.lost_date) : 'Current'}</td>
             <td>${champDisplay}</td> 
+            <td>${h.wrestling_group_id || '-'}</td>
+            <td>${h.match_id || '-'}</td>
             <td>${h.notes || '-'}</td>
         `;
         tbody.appendChild(tr);
@@ -84,6 +114,10 @@ document.getElementById('addHistoryForm').addEventListener('submit', async (e) =
     const data = Object.fromEntries(new FormData(e.target).entries());
     
     if (!data.wrestler_id) delete data.wrestler_id; // Prevent sending empty string for ID
+    if (!data.wrestling_group_id) delete data.wrestling_group_id;
+    if (!data.match_id) delete data.match_id;
+    if (!data.won_date) delete data.won_date;
+    if (!data.lost_date) delete data.lost_date;
     
     const resp = await fetch('/api/title_history', {
         method: 'POST',
@@ -97,5 +131,42 @@ document.getElementById('addHistoryForm').addEventListener('submit', async (e) =
     } else {
         const err = await resp.json();
         alert('Failed to add history: ' + (err.error || 'Unknown error'));
+    }
+});
+
+async function loadDefenses(titleId) {
+    const resp = await fetch(`/api/title_defense?title_id=${titleId}`);
+    if (!resp.ok) return;
+    
+    const defenses = await resp.json();
+    const tbody = document.getElementById('defenseBody');
+    tbody.innerHTML = '';
+
+    defenses.forEach(d => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${d.match_id}</td>
+            <td>${d.result}</td>
+            <td>${d.notes || '-'}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+document.getElementById('addDefenseForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(e.target).entries());
+    
+    const resp = await fetch('/api/title_defense', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+    });
+    if(resp.ok) {
+        e.target.reset();
+        document.getElementById('defenseTitleId').value = data.title_id;
+        loadDefenses(data.title_id);
+    } else {
+        alert('Failed to add defense');
     }
 });

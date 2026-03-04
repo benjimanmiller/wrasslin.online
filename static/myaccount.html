@@ -193,6 +193,13 @@
                             </div>
 
                             <div class="tool-card">
+                                <h5>Roster Management</h5>
+                                <ul id="rosterMemberList" style="list-style: none; padding: 0;">
+                                    <!-- Roster members will be loaded here by myaccount.js -->
+                                </ul>
+                            </div>
+
+                            <div class="tool-card">
                                 <h5>Create Title</h5>
                                 <form id="createTitleForm">
                                     <div class="form-group"><input type="text" name="name" placeholder="Title Name" required></div>
@@ -219,6 +226,11 @@
                                     <div class="form-group"><input type="datetime-local" name="date_time" required></div>
                                     <button type="submit">Create Event</button>
                                 </form>
+                                <div style="margin-top: 10px; text-align: right;">
+                                    <a href="events.html" style="font-size: 0.9rem; color: #333;">
+                                        Manage Events & Matches &rarr;
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>

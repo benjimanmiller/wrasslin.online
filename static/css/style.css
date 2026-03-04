@@ -2,6 +2,8 @@ body {
     font-family: sans-serif;
     margin: 0;
     padding: 0;
+    background: #f0f2f5;
+    color: #333;
 }
 
 header {
@@ -32,6 +34,13 @@ nav a {
     font-weight: bold;
 }
 
+main {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+
 /* Auth Pages & Forms */
 .auth-container {
     max-width: 400px;
@@ -39,7 +48,7 @@ nav a {
     padding: 0 1rem;
 }
 
-h1 { text-align: center; }
+h1, h2 { text-align: center; }
 .form-group { margin-bottom: 1rem; }
 label { display: block; margin-bottom: .5rem; font-weight: bold; }
 input, select { width: 100%; padding: .5rem; box-sizing: border-box; }
@@ -63,10 +72,10 @@ button:hover { background: #555; }
 }
 
 .profile-card, .stats-card, .activity-card, .settings-card {
-    background: #f9f9f9;
+    background: #fff;
     padding: 1.5rem;
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     margin-bottom: 2rem;
 }
 
@@ -97,3 +106,46 @@ h4 { margin-top: 1.5rem; margin-bottom: 0.5rem; color: #555; border-bottom: 1px 
 
 .tool-card { background: #fff; border: 1px solid #eee; padding: 1rem; margin-bottom: 1rem; border-radius: 4px; }
 .tool-card h5 { margin-top: 0; margin-bottom: 0.5rem; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+
+/* Titles Page */
+.titles-container { display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
+.title-list-item { padding: 1rem; background: #fff; border: 1px solid #ddd; margin-bottom: 0.5rem; cursor: pointer; border-radius: 4px; }
+.title-list-item:hover { background: #f7f7f7; }
+.title-list-item.active { background: #333; color: #fff; border-color: #333; }
+
+.history-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+.history-table th, .history-table td { padding: 0.5rem; border-bottom: 1px solid #ddd; text-align: left; }
+.history-table th { background: #f2f2f2; }
+
+/* Feed / Post Styles */
+.post-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+}
+.post-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1rem;
+}
+.post-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.post-author {
+    font-weight: bold;
+    display: block;
+}
+.post-date {
+    color: #666;
+    font-size: 0.85rem;
+}
+.post-content p {
+    margin: 0;
+    line-height: 1.6;
+}
